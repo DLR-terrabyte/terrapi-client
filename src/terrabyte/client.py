@@ -65,7 +65,7 @@ def create_private_item(
 
     _send_client_request(
         client,
-        f"{TERRABYTE_PRIVATE_API_URL}/collections/{collection_id}",
+        f"{TERRABYTE_PRIVATE_API_URL}/collections/{collection_id}/items",
         method="POST",
         json=item.to_dict(),
     ).raise_for_status()
