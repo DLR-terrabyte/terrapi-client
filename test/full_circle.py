@@ -5,11 +5,11 @@ import time
 import pystac
 import pystac_client
 
-from terrabyte import (
+from terrapi.client import (
     open_private_catalog,
     open_public_catalog,
 )
-from terrabyte.client import (
+from terrapi.client import (
     create_private_collection,
     update_private_collection,
     delete_private_collection,
