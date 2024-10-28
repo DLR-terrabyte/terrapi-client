@@ -14,7 +14,10 @@ pip install git+https://github.com/DLR-terrabyte/terrapi-client.git
 
 ```python
 import pystac
-from terrapi.client.stac import create_private_collection
+from terrapi.client.stac import open_private_catalog, create_private_collection
+
+# Connect to the terrabyte private STAC API
+catalog = open_private_catalog()
 
 # All private collections are prefixed with your terrabyte/LRZ username
 # All shared collections are prefixed with the DSS container id (e.g., pn56su-dss-0001)
@@ -35,11 +38,17 @@ create_private_collection(catalog, collection)
 ### Create new STAC item in private/shared STAC collection
 
 ```python
-from terrapi.client.stac import create_private_item
+from terrapi.client.stac import open_private_catalog, create_private_item
 from datetime import datetime
 
+# Connect to the terrabyte private STAC API
+catalog = open_private_catalog()
+
+# Create STAC item
 geom = {"type": "Point", "coordinates": [0, 0]}
 item = pystac.Item("test_item", geom, None, datetime=datetime.now(), properties={})
+
+# Add STAC item within STAC collection
 create_private_item(catalog, item, collection.id)
 ```
 
@@ -75,13 +84,23 @@ print("%s items found" % len(items['features']))
 ### Delete STAC item
 
 ```python
-from terrapi.client.stac import delete_private_item
+from terrapi.client.stac import open_private_catalog, delete_private_item
+
+# Connect to the terrabyte private STAC API
+catalog = open_private_catalog()
+
+# Delete STAC item within STAC collection
 delete_private_item(catalog, item.id, collection.id)
 ```
 
 ### Delete STAC collection
 
 ```python
-from terrapi.client.stac import delete_private_collection
+from terrapi.client.stac import open_private_catalog, delete_private_collection
+
+# Connect to the terrabyte private STAC API
+catalog = open_private_catalog()
+
+# Delete STAC collection
 delete_private_collection(catalog, collection.id)
 ```
