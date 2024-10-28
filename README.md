@@ -5,7 +5,7 @@ The Python library `terrapi-client` offers functions to easily work with the ter
 ## Installation
 
 ```bash
-pip install git+https://github.com/DLR-terrabyte/terrapi-client.git
+pip install git+https://github.com/DLR-terrabyte/terrapi-client.git@v1.0.0
 ```
 
 ## Usage
