@@ -23,8 +23,10 @@ catalog = open_private_catalog()
 # All shared collections are prefixed with the DSS container id (e.g., pn56su-dss-0001)
 prefix = '<your username>'
 
+collection_id = f"{prefix}.testcollection"
+
 collection = pystac.Collection(
-    f"{prefix}.testcollection",
+    collection_id,
     "description",
     pystac.Extent(
         pystac.SpatialExtent([[-180, -90.180, 90]]),
@@ -49,7 +51,7 @@ geom = {"type": "Point", "coordinates": [0, 0]}
 item = pystac.Item("test_item", geom, None, datetime=datetime.now(), properties={})
 
 # Add STAC item within STAC collection
-create_private_item(catalog, item, collection.id)
+create_private_item(catalog, item, collection_id)
 ```
 
 ### Explore the STAC catalog
@@ -90,7 +92,7 @@ from terrapi.client.stac import open_private_catalog, delete_private_item
 catalog = open_private_catalog()
 
 # Delete STAC item within STAC collection
-delete_private_item(catalog, item.id, collection.id)
+delete_private_item(catalog, item.id, collection_id)
 ```
 
 ### Delete STAC collection
@@ -102,5 +104,5 @@ from terrapi.client.stac import open_private_catalog, delete_private_collection
 catalog = open_private_catalog()
 
 # Delete STAC collection
-delete_private_collection(catalog, collection.id)
+delete_private_collection(catalog, collection_id)
 ```
