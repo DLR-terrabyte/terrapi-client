@@ -92,7 +92,7 @@ from terrapi.client.stac import open_private_catalog, delete_private_item
 catalog = open_private_catalog()
 
 # Delete STAC item within STAC collection
-delete_private_item(catalog, item.id, collection_id)
+delete_private_item(catalog, item, collection_id)
 ```
 
 ### Delete STAC collection
