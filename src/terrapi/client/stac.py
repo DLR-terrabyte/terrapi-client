@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union, List
 from urllib.parse import urljoin
 
 import pystac
@@ -57,17 +57,32 @@ def delete_private_collection(
 
 
 def create_private_item(
-    client: pystac_client.Client, item: pystac.Item, collection_id: Optional[str] = None
+    client: pystac_client.Client,
+    item: Union[pystac.Item, List[pystac.Item]],
+    collection_id: Optional[str] = None
 ):
-    collection_id = collection_id or item.collection_id
+    if isinstance(item, pystac.Item):
+        items = [item]
+    else:
+        items = item
+
+    collection_id = collection_id or items[0].collection_id
     if not collection_id:
-        raise ValueError(f"Could not determine collection ID for item {item}")
+        raise ValueError(f"Could not determine collection ID.")
+
+    if len(items) == 1:
+        payload = items[0].to_dict()
+    else:
+        payload = {
+            "type": "FeatureCollection",
+            "features": [item.to_dict() for item in items],
+        }
 
     _send_client_request(
-        client,
-        f"{TERRABYTE_PRIVATE_API_URL}/collections/{collection_id}/items",
+        client=client,
+        url=f"{TERRABYTE_PRIVATE_API_URL}/collections/{collection_id}/items",
         method="POST",
-        json=item.to_dict(),
+        json=payload,
     ).raise_for_status()
 
 
