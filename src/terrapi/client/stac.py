@@ -47,11 +47,11 @@ def update_private_collection(
 
 
 def delete_private_collection(
-    client: pystac_client.Client, collection: pystac.Collection
+    client: pystac_client.Client, collection_id: str
 ):
     _send_client_request(
         client,
-        f"{TERRABYTE_PRIVATE_API_URL}/collections/{collection.id}",
+        f"{TERRABYTE_PRIVATE_API_URL}/collections/{collection_id}",
         method="DELETE",
     ).raise_for_status()
 
