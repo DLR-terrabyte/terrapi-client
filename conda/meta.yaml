@@ -1,0 +1,45 @@
+{% set name = "terrapi" %}
+{% set data = load_setup_py_data(setup_file="../setup.py", from_recipe_dir=True) %}
+{% set version = environ.get('GIT_DESCRIBE_TAG', '').lstrip('v') or 'UNKNOWN' %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  noarch: python
+  script: |
+    git clean -xdf
+    {{ PYTHON }} -m pip install . -vv --no-deps
+  entry_points:
+    - terrapi = terrapi.cli.terrapi_cli:terrapi
+
+requirements:
+  host:
+    - python {{ data.get('python_requires', '') }}
+    - pip
+    - setuptools>=45
+    - setuptools_scm>=6.2
+    - git
+  run:
+    - python {{ data.get('python_requires', '') }}
+    {% for dep in data.get('install_requires', []) %}
+    - {{ dep.split('@')[0].strip() }}
+    {% endfor %}
+  #import dependencies from setup.cfg removing the @ github link to terrabyte-auth as we also install it via conda 
+test:
+  imports:
+    - terrapi
+  commands:
+    - terrapi stac --help
+
+about:
+  home: {{ data.get('url', '') }}
+  license: {{ data.get('license', '') }}
+  summary: {{ data.get('description', '') }}
+  description: {{ data.get('description', '') }}
+  #description: {{ data.get('long_description', '') | replace('\n', '\n    ')
