@@ -1,5 +1,8 @@
 [build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel"]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
-write_to = "src/terrapi/_version.py"
+write_to = "src/terrapi/client/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
