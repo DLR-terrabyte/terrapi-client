@@ -1,18 +1,22 @@
 from typing import Any, Optional, Union, List, Dict
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 from datetime import datetime, timedelta
 
 import pystac
 import pystac_client
-import requests
 
 from terrapi.adapter import create_requests_adapter, wrap_request
+
+from terrapi.auth.config import RefreshTokenStore
+from terrapi.auth.oidc import jwt_decode
+from terrapi.settings import TERRABYTE_CLIENT_ID
 
 from terrapi.settings import (
     TERRABYTE_PRIVATE_API_URL,
     TERRABYTE_PUBLIC_API_URL,
 )
 
+from terrapi.stac.private_api_prefixes import get_valid_private_api_prefixes
 
 def open_private_catalog() -> pystac_client.Client:
     return pystac_client.Client.open(
@@ -121,6 +125,12 @@ def open_public_catalog() -> pystac_client.Client:
         url=TERRABYTE_PUBLIC_API_URL,
     )
 
+def get_private_collection_prefix_lists() -> tuple[list[str],list[str]]
+     
+    # Get tokens using the requests adapter
+    auth = create_requests_adapter()
+    tokens = auth._get_tokens()
+    return get_valid_private_api_prefixes(tokens.access_token)
 
 def login(
     force: bool = False,
@@ -150,9 +160,7 @@ def login(
             - 'token': decoded token payload if decode=True
             - None if delete=True or on error
     """
-    from terrapi.auth.config import RefreshTokenStore
-    from terrapi.auth.oidc import jwt_decode
-    from terrapi.settings import TERRABYTE_CLIENT_ID
+  
     
     result = {}
     token_store = RefreshTokenStore()
